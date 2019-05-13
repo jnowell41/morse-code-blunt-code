@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Morse Translator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+      crossorigin="anonymous"
+    />
+    <style type="text/css">
+      @keyframes blink {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0.2;
+        }
+      }
+      @keyframes point {
+        from {
+          margin-right: 0px;
+        }
+        to {
+          margin-right: 20px;
+        }
+      }
+      .inputAndOutputContainer,
+      .inputMorseAndGetOutputContainer {
+        width: 100vw;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        height: 40vh;
+        border-bottom: 2px black solid;
+      }
+      .englishContainer,
+      .morseContainer {
+        display: flex;
+        width: 50%;
+        height: 200px;
+        justify-content: space-around;
+        flex-direction: column;
+        min-width: 500px;
+      }
+      #englishInput,
+      #morseInput {
+        width: 80%;
+        font-size: 2em;
+        border: none;
+        background-color: transparent;
+        transition: 0.1s;
+        border: 3px transparent solid;
+        /* animation: blink 1.2s infinite; */
+      }
+      #englishInput:hover,
+      #englishInput:focus,
+      #morseInput:hover,
+      #morseInput:focus {
+        background-color: white;
+        box-shadow: 10px 10px;
+        border: 3px black solid;
+      }
+      #submissionButton,
+      #morseSubmissionButton {
+        width: 80%;
+        font-size: 2em;
+        font-weight: 550;
+        height: 50px;
+        background-color: transparent;
+        border: none;
+        transition: 0.1s;
+        text-align: left;
+        padding-left: 30px;
+        border: 3px transparent solid;
+      }
+      #submissionButton:hover,
+      #morseSubmissionButton:hover {
+        box-shadow: 10px 10px;
+        border: 3px black solid;
+      }
+      #outputDivContainer,
+      #morseOutputDivContainer {
+        width: 30%;
+        font-size: 2em;
+        font-weight: 500;
+        font-family: Helvetica, Arial, sans-serif;
+        height: 100%;
+        /* border: 1px black solid; */
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+      .fa-hand-point-right {
+        font-size: 2em;
+        padding-right: 20px;
+      }
+    </style>
+    <script type="text/javascript"></script>
+  </head>
+  <body>
+    <div class="inputAndOutputContainer">
+      <div class="englishContainer">
+        <div id="inputAndIcon">
+          <span class="far fa-hand-point-right"></span
+          ><input id="englishInput" type="text" autofocus />
+        </div>
+        <button id="submissionButton" onclick="convertEnglish()">
+          Convert to Morse
+        </button>
+      </div>
+      <div id="outputDivContainer"><p id="outputDiv"></p></div>
+    </div>
+
+    <div class="inputMorseAndGetOutputContainer">
+      <div class="morseContainer">
+        <div id="inputAndIcon">
+          <span class="far fa-hand-point-right"></span
+          ><input id="morseInput" type="text" />
+        </div>
+        <button id="morseSubmissionButton" onclick="convertMorse()">
+          Convert to English
+        </button>
+      </div>
+      <div id="morseOutputDivContainer"><p id="morseOutputDiv"></p></div>
+    </div>
+  </body>
+  <script>
+    var morse = {
+      a: ". ___",
+      b: "___ . . .",
+      c: "___ . ___ .",
+      d: "___ . .",
+      e: ".",
+      f: ". . ___ .",
+      g: "___ ___ .",
+      h: ". . . .",
+      i: ". .",
+      j: ". ___ ___ ___ ___",
+      k: "___ . ___",
+      l: ". ___ . .",
+      m: "___ ___",
+      n: "___ .",
+      o: "___ ___ ___",
+      p: ". ___ ___ .",
+      q: "___ ___ . ___",
+      r: ". ___ .",
+      s: ". . .",
+      t: "___",
+      u: ". . ___",
+      v: ". . . ___",
+      w: ". ___ ___",
+      x: "___ . . ___",
+      y: "___ . ___ ___",
+      z: "___ ___ . .",
+      1: ". ___ ___ ___",
+      2: ". . ___ ___ ___",
+      3: ". . . ___ ___",
+      4: ". . . . ___",
+      5: ". . . . .",
+      6: "___ . . . .",
+      7: "___ ___ . . .",
+      8: "___ ___ ___ . .",
+      9: "___ ___ ___ ___ .",
+      0: "___ ___ ___ ___ ___",
+      " ": "/", //spaces
+      //I don'nt know if the following are correct or not...
+      ".": ". ___ . ___ . ___",
+      ",": "___ . . ___",
+      ":": "___ . . .",
+      "?": ". . ___ . .",
+      "'": ". ____ .",
+      "-": "___ . . . . ___",
+      "/": "___ . . ___ .",
+      "(": "___ . ___ .",
+      ")": "___ . ___ . ___",
+      '"': ". ___ . . ___ .",
+      "@": ". ___ . ___ .",
+      "=": "___ . . . ___",
+      "&": ". ___ . . .",
+      ";": "___ . ___ . ___ .",
+      "+": ". ___ . ___ .",
+      _: ". . ___ . __",
+      $: ". . . ___ . . ___",
+      "!": "___ . ___ . ____"
+    };
+
+    const convertEnglish = () => {
+      let translateMePlz = document.getElementById("englishInput").value;
+      let morseConversionOutput = "";
+      for (let i = 0; i < translateMePlz.length; i++) {
+        let individualLetter = translateMePlz[i];
+        if (morse[individualLetter] === "/") {
+          morseConversionOutput += "\xa0\xa0\xa0\xa0";
+        } else {
+          morseConversionOutput +=
+            morse[individualLetter.toLowerCase()] + "\xa0\xa0";
+        }
+      }
+      document.getElementById("outputDiv").innerHTML = morseConversionOutput;
+    };
+
+    const convertMorse = () => {
+      let translateMePlz = document.getElementById("morseInput").value;
+      let newTranslatePlz = "";
+      translateMePlz.split("    ").map(word => {
+        fullWord = word;
+        word.split("  ").map(letter => {
+          //   console.log(morse);
+          Object.keys(morse).map(element => {
+            morse[element] === letter
+              ? (newTranslatePlz += element + " ")
+              : null;
+          });
+        });
+      });
+      document.getElementById("morseOutputDiv").innerHTML = newTranslatePlz;
+    };
+
+    // for (i = 0; i < morseString.length; i++) {
+    //         letter === morseString[i]
+    //           ? (newTranslatePlz += morseString[i - 0])
+    //           : null;
+    //       }
+
+    // const test = () => {
+    //   Object.keys(morse).map(element => {
+    //     let translateMePlz = document.getElementById("morseInput").value;
+    //     let newObject = translateMePlz.indexOf(element);
+    //     document.getElementById("morseOutputDiv").innerHTML = newObject;
+    //   });
+    // };
+  </script>
+</html>
