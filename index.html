@@ -21,11 +21,14 @@
         }
       }
       @keyframes point {
-        from {
-          margin-right: 0px;
+        0% {
+          margin-left: 0px;
         }
-        to {
-          margin-right: 20px;
+        50% {
+          margin-left: 15px;
+        }
+        100% {
+          margin-left: 0px;
         }
       }
       .inputAndOutputContainer,
@@ -52,10 +55,21 @@
         width: 80%;
         font-size: 2em;
         border: none;
-        background-color: transparent;
+        border-radius: 25px;
         transition: 0.1s;
-        border: 3px transparent solid;
-        /* animation: blink 1.2s infinite; */
+        border: 5px black solid;
+        padding-left: 25px;
+      }
+      #inputAndIcon {
+        display: flex;
+        width: 100%;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+      }
+      #pointDiv {
+        width: 80px;
+        /* animation: point 1s infinite; */
       }
       #englishInput:hover,
       #englishInput:focus,
@@ -63,12 +77,13 @@
       #morseInput:focus {
         background-color: white;
         box-shadow: 10px 10px;
-        border: 3px black solid;
+        border: 5px black solid;
       }
       #submissionButton,
       #morseSubmissionButton {
         width: 80%;
         font-size: 2em;
+        border-radius: 25px;
         font-weight: 550;
         height: 50px;
         background-color: transparent;
@@ -81,7 +96,7 @@
       #submissionButton:hover,
       #morseSubmissionButton:hover {
         box-shadow: 10px 10px;
-        border: 3px black solid;
+        border: 5px black solid;
       }
       #outputDivContainer,
       #morseOutputDivContainer {
@@ -97,7 +112,7 @@
       }
       .fa-hand-point-right {
         font-size: 2em;
-        padding-right: 20px;
+        animation: point 1.5s infinite;
       }
     </style>
     <script type="text/javascript"></script>
@@ -106,8 +121,8 @@
     <div class="inputAndOutputContainer">
       <div class="englishContainer">
         <div id="inputAndIcon">
-          <span class="far fa-hand-point-right"></span
-          ><input id="englishInput" type="text" autofocus />
+          <div id="pointDiv"><span class="far fa-hand-point-right"></span></div>
+          <input id="englishInput" type="text" autofocus />
         </div>
         <button id="submissionButton" onclick="convertEnglish()">
           Convert to Morse
@@ -119,8 +134,8 @@
     <div class="inputMorseAndGetOutputContainer">
       <div class="morseContainer">
         <div id="inputAndIcon">
-          <span class="far fa-hand-point-right"></span
-          ><input id="morseInput" type="text" />
+          <div id="pointDiv"><span class="far fa-hand-point-right"></span></div>
+          <input id="morseInput" type="text" />
         </div>
         <button id="morseSubmissionButton" onclick="convertMorse()">
           Convert to English
