@@ -225,11 +225,8 @@
       translateMePlz.split("    ").map(word => {
         fullWord = word;
         word.split("  ").map(letter => {
-          //   console.log(morse);
           Object.keys(morse).map(element => {
-            morse[element] === letter
-              ? (newTranslatePlz += element + " ")
-              : null;
+            morse[element] === letter ? (newTranslatePlz += element) : null;
           });
         });
       });
