@@ -31,6 +31,18 @@
           margin-left: 0px;
         }
       }
+
+      @keyframes pointing {
+        0% {
+          margin-left: 0px;
+        }
+        40% {
+          margin-left: 15px;
+        }
+        100% {
+          margin-left: 0px;
+        }
+      }
       .inputAndOutputContainer,
       .inputMorseAndGetOutputContainer {
         width: 100vw;
@@ -114,6 +126,9 @@
         font-size: 2em;
         animation: point 1.5s infinite;
       }
+      #pointer {
+        animation: pointing 2s infinite;
+      }
     </style>
     <script type="text/javascript"></script>
   </head>
@@ -134,7 +149,9 @@
     <div class="inputMorseAndGetOutputContainer">
       <div class="morseContainer">
         <div id="inputAndIcon">
-          <div id="pointDiv"><span class="far fa-hand-point-right"></span></div>
+          <div id="pointDiv">
+            <span id="pointer" class="far fa-hand-point-right"></span>
+          </div>
           <input id="morseInput" type="text" />
         </div>
         <button id="morseSubmissionButton" onclick="convertMorse()">
